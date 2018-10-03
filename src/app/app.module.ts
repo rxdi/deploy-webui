@@ -30,6 +30,7 @@ import { CovalentMarkdownModule } from '@covalent/markdown';
 import { CovalentDynamicFormsModule } from '@covalent/dynamic-forms';
 import { COMPLETION_PROVIDERS } from 'ngx-monaco';
 import { TravisCompletionProvider } from './folders/folders.monaco.provider';
+
 export const COVALENT = [
   CovalentLayoutModule,
   CovalentStepsModule,

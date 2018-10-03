@@ -6,15 +6,17 @@ import { DetailsComponent } from './details/details.component';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '../shared/shared.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MonacoEditorModule, COMPLETION_PROVIDERS } from 'ngx-monaco';
+import { CovalentCodeEditorModule } from '@covalent/code-editor';
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     FoldersRoutingModule,
     MatListModule,
     MatIconModule,
@@ -23,7 +25,8 @@ import { MonacoEditorModule, COMPLETION_PROVIDERS } from 'ngx-monaco';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MonacoEditorModule.forRoot()
+    MonacoEditorModule.forRoot(),
+    CovalentCodeEditorModule
   ],
   declarations: [ListComponent, DetailsComponent]
 })

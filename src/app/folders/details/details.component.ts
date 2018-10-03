@@ -38,7 +38,7 @@ export class DetailsComponent implements OnInit {
   fileChange = new Subject<MonacoFile>();
   stream: Observable<any>;
   @ViewChild('next') scroll: ElementRef;
-
+  model;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -67,7 +67,7 @@ export class DetailsComponent implements OnInit {
                 namespace: stream.package['name']
               });
             }
-
+            this.model = stream.file;
             this.fileMonaco.content = stream.file;
             this.loading = false;
           });
@@ -87,8 +87,7 @@ export class DetailsComponent implements OnInit {
   }
 
   onFileChange(file: MonacoFile) {
-    this.newFile = file.content;
-    this.fileService.saveFile(this.path, file.content).subscribe(stream => console.log('Content saved'));
+    this.fileService.saveFile(this.path, this.model).subscribe(stream => console.log('Content saved'));
   }
 
   save() {
