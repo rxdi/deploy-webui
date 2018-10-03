@@ -133,6 +133,7 @@
   
   export interface IFileRawType {
     __typename?: "FileRawType";
+    package: string | null;
     file: string | null;
 }
 

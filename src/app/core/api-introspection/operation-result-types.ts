@@ -117,6 +117,7 @@ export interface listFilesVariables {
 // ====================================================
 
 export interface readFile_readFile {
+  package: string | null;
   file: string | null;
 }
 
@@ -137,6 +138,7 @@ export interface readFileVariables {
 // ====================================================
 
 export interface saveFile_saveFile {
+  package: string | null;
   file: string | null;
 }
 

@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators/index';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { BackService } from './core/services/back.service';
+import { Observable } from 'apollo-link';
 
 @Component({
   selector: 'app-root',
@@ -21,10 +22,8 @@ export class AppComponent {
     {label: 'Light', value: true},
     {label: 'Console', value: false},
     {label: 'T.V.', value: true}];
-  stream: BehaviorSubject<any[]> = new BehaviorSubject([]);
   constructor(
       private apollo: Apollo,
-      private post: NewPostGQL,
       private se: ServerService,
       private router: Router,
       private location: Location,
@@ -44,23 +43,6 @@ export class AppComponent {
     // }).subscribe(stream => {
     //   debugger
     // });
-
-    this.test = this.post.subscribe();
-    this.apollo.subscribe({
-      query: gql`
-      subscription subscribeToUserMessagesBasic {
-        subscribeToUserMessagesBasic {
-          message
-        }
-      }
-      `
-    })
-    .pipe(
-      map((res) => res.data.subscribeToUserMessagesBasic)
-    )
-    .subscribe(s => {
-      this.stream.next([...this.stream.getValue(), s]);
-    });
 
   }
 

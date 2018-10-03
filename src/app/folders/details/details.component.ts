@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Subscription, Subject } from 'rxjs';
@@ -7,8 +7,9 @@ import { FileService } from '../../core/services/file/file.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'subscriptions-transport-ws';
 import { IFileRawType } from '../../core/api-introspection';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, skip, map, tap } from 'rxjs/operators/index';
 import { MonacoFile } from 'ngx-monaco';
+import { LoggerService } from '../../core/services/logger/logger.service';
 
 @Component({
   selector: 'app-details',
@@ -31,36 +32,58 @@ export class DetailsComponent implements OnInit {
     content: `console.log('hello world');`
   };
   loading: boolean = true;
+  disabled: boolean = false;
   newFile: string;
   extension: string;
   fileChange = new Subject<MonacoFile>();
+  stream: Observable<any>;
+  @ViewChild('next') scroll: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private buildService: BuilderService,
     private formBuilder: FormBuilder,
-    private fileService: FileService
+    private fileService: FileService,
+    public serverLogger: LoggerService
   ) { }
 
   ngOnInit() {
-    
+
     this.file = this.route.snapshot.paramMap.get('file');
     this.extension = this.file.split('.').pop();
-    if(this.extension === 'json') {
+    if (this.extension === 'json') {
       this.defaultFileType = 'json';
     }
     this.subscription = this.route.queryParams
       .subscribe(params => {
         this.path = params['path'];
-        this.fileService.readFile(this.path)
+        if(this.path) {
+          this.fileService.readFile(this.path)
           .subscribe(stream => {
+            if (stream.package) {
+              stream.package = JSON.parse(stream.package);
+              this.form.patchValue({
+                namespace: stream.package['name']
+              });
+            }
+
             this.fileMonaco.content = stream.file;
             this.loading = false;
           });
-        return this.rawFile;
+        } else {
+          this.loading = false;
+        }
       });
 
+  }
+
+  ngAfterViewInit() {
+    this.stream = this.serverLogger.stream
+      .pipe(
+        skip(1),
+        tap(() => this.scroll.nativeElement.scrollIntoView({ behavior: 'smooth' }))
+      );
   }
 
   onFileChange(file: MonacoFile) {
@@ -80,6 +103,7 @@ export class DetailsComponent implements OnInit {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+    this.serverLogger.clearLog();
   }
 
   isJsOrTs() {
@@ -88,16 +112,14 @@ export class DetailsComponent implements OnInit {
   }
 
   deploy() {
-    this.form.updateValueAndValidity();
-    this.form.markAsTouched();
-    if (this.form.invalid) {
-      return;
-    }
     const folder = this.path.replace(this.file, '');
-    this.buildService.build(folder, this.file, this.form.value.commit, this.form.value.namespace, `${folder}build`)
-      .subscribe(stream => {
-        console.log(stream);
-      });
+    this.disabled = true;
+    this.buildService
+      .build(folder, this.file, this.form.value.commit, this.form.value.namespace, `${folder}build`)
+      .subscribe(
+        () => this.disabled = false,
+        () => this.disabled = false
+      );
   }
 
   build() {

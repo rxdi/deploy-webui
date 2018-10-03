@@ -1,43 +1,48 @@
-
 <div *ngIf="!loading">
-    <div style="display: flex">
-        <div>
-          <button mat-raised-button color="primary" (click)="back()">
-            Back
-          </button>
-        </div>
-        <span class="spacer"></span>
-      
-        <form *ngIf="isJsOrTs()" [formGroup]="form">
-          <mat-form-field style="margin-right:10px;">
-            <input formControlName="namespace" matInput placeholder="Namespace">
-          </mat-form-field>
-          <mat-form-field>
-            <input formControlName="commit" matInput placeholder="Commit message">
-          </mat-form-field>
-        </form>
-        <span class="spacer"></span>
-        <div>
-            <button *ngIf="isJsOrTs()" mat-raised-button (click)="build()" color="primary">
-                Build
-              </button>
-          <button *ngIf="isJsOrTs()" mat-raised-button (click)="deploy()" color="primary">
-            Deploy
-          </button>
-        </div>
-        </div>
-      
-      
-        
-        {{ file }}
-      
-        <!-- {{ (rawFile | async)?.file }} -->
-      
-        <monaco-editor
-        theme="vs-dark"
-        [file]="fileMonaco"
-        (fileChange)="onFileChange($event)">
-      </monaco-editor>
-      
+  <div style="display: flex">
+    <div>
+      <button mat-raised-button color="primary" (click)="back()">
+        Back
+      </button>
+    </div>
+
+    <span class="spacer"></span>
+
+    <form *ngIf="isJsOrTs()" [formGroup]="form">
+      <mat-form-field style="margin-right:10px;">
+        <input required formControlName="namespace" matInput placeholder="Namespace">
+      </mat-form-field>
+      <!-- <mat-error *ngIf="form.get('namespace').hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error> -->
+      <mat-form-field>
+        <input required formControlName="commit" matInput placeholder="Commit message">
+      </mat-form-field>
+      <!-- <mat-error *ngIf="form.get('commit').hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error> -->
+    </form>
+    <span class="spacer"></span>
+    <div>
+      <button style="margin-right: 15px;" *ngIf="isJsOrTs()" mat-raised-button (click)="build()" color="primary">
+        Build
+      </button>
+      <button [disabled]="disabled" *ngIf="isJsOrTs()" mat-raised-button (click)="form.valid && deploy()" color="primary">
+        Deploy
+      </button>
+    </div>
+  </div>
+  {{ file }}
+  <!-- {{ (rawFile | async)?.file }} -->
+  <monaco-editor theme="vs-dark" [file]="fileMonaco" (fileChange)="onFileChange($event)"></monaco-editor>
+  <div *ngIf="isJsOrTs()" style="font-size: 13px; margin-top: 30px; padding: 10px; overflow-x: hidden;height: 300px ;color: white;background-color: #1e1e1e">
+    <p *ngFor="let m of stream | async">
+      {{ m.message }}
+    </p>
+    <p>&nbsp;</p>
+    <div #next></div>
+  </div>
+
 </div>
+
 

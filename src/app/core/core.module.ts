@@ -4,6 +4,7 @@ import { NamespaceService } from "./services/namespace/namespace.service";
 import { FileService } from "./services/file/file.service";
 import { BuilderService } from "./services/builder/builder.service";
 import { BackService } from "./services/back.service";
+import { LoggerService } from "./services/logger/logger.service";
 
 @NgModule({
     providers: [
@@ -11,7 +12,8 @@ import { BackService } from "./services/back.service";
         NamespaceService,
         FileService,
         BuilderService,
-        BackService
+        BackService,
+        LoggerService
     ]
 })
 export class CoreModule {}
