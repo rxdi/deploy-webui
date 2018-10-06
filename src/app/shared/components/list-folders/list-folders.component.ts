@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class ListFoldersComponent implements OnInit {
   
-  private directory: string;
+  private directory: string = '.';
 
   constructor(
     private fileService: FileService,

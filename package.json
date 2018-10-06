@@ -30,6 +30,7 @@
     "@covalent/highlight": "^2.0.0-beta.2",
     "@covalent/http": "^2.0.0-beta.2",
     "@covalent/markdown": "^2.0.0-beta.2",
+    "@reactive-redux/store": "^1.0.40",
     "apollo-angular": "^1.3.0",
     "apollo-angular-link-http": "^1.2.0",
     "apollo-cache-inmemory": "^1.2.0",

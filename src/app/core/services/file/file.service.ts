@@ -11,7 +11,7 @@ export const SAVE_FILE_QUERY = importQuery('save-file.query.graphql');
 
 @Injectable()
 export class FileService {
-    defaultFolder = './builds';
+    defaultFolder = '.';
     currentFolder: BehaviorSubject<string> = new BehaviorSubject(this.defaultFolder);
     previewsFolder: string[] = [];
     mainFolder: string = this.defaultFolder;
