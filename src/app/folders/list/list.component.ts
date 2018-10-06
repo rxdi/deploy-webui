@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FileService } from '../../core/services/file/file.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Subscription } from 'apollo-client/util/Observable';
 
 @Component({
   selector: 'app-list',
@@ -11,11 +12,18 @@ export class ListComponent {
 
   folderForm = this.formBuilder.group({
     path: this.fileService.defaultFolder
-  })
+  });
+
+  subscription: Subscription;
+
   constructor(
     private fileService: FileService,
     private formBuilder: FormBuilder
   ) {
+  }
+
+  ngOnInit() {
+    this.subscription = this.fileService.currentFolder.subscribe(dir => this.folderForm.setValue({ path: dir }));
   }
 
   openNewFolder() {
@@ -24,6 +32,12 @@ export class ListComponent {
 
   back() {
     this.fileService.back();
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

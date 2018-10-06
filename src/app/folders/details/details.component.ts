@@ -7,7 +7,7 @@ import { FileService } from '../../core/services/file/file.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'subscriptions-transport-ws';
 import { IFileRawType } from '../../core/api-introspection';
-import { switchMap, skip, map, tap } from 'rxjs/operators/index';
+import { skip, tap } from 'rxjs/operators/index';
 import { MonacoFile } from 'ngx-monaco';
 import { LoggerService } from '../../core/services/logger/logger.service';
 
@@ -32,6 +32,7 @@ export class DetailsComponent implements OnInit {
     content: `console.log('hello world');`
   };
   loading: boolean = true;
+  isImage: boolean;
   disabled: boolean = false;
   newFile: string;
   extension: string;
@@ -49,11 +50,15 @@ export class DetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+   
     this.file = this.route.snapshot.paramMap.get('file');
     this.extension = this.file.split('.').pop();
+    this.isImage = this.extension === 'jpg' || this.extension === 'jpeg' || this.extension === 'png';
     if (this.extension === 'json') {
       this.defaultFileType = 'json';
+    }
+    if (this.extension === 'yml') {
+      this.defaultFileType = this.extension;
     }
     this.subscription = this.route.queryParams
       .subscribe(params => {

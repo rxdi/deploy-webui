@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { FileService } from '../../../core/services/file/file.service';
 import { IFileType, IFolderStructureType } from '../../../core/api-introspection';
 import { switchMap, filter } from 'rxjs/operators/index';
@@ -12,8 +12,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./list-folders.component.css']
 })
 export class ListFoldersComponent implements OnInit {
-  
+
   private directory: string = '.';
+  private subscription: Subscription;
 
   constructor(
     private fileService: FileService,
@@ -25,15 +26,15 @@ export class ListFoldersComponent implements OnInit {
   ngOnInit() {
     this.folders = this.listFiles();
     this.fileService.currentFolder
-    .pipe(
-      filter(d => !!d),
-      switchMap(directory => {
-        this.directory = directory;
-        this.folders = this.listFiles();
-        return this.folders;
-      }),
-    )
-    .subscribe(() => console.log('Success'))
+      .pipe(
+        filter(d => !!d),
+        switchMap(directory => {
+          this.directory = directory;
+          this.folders = this.listFiles();
+          return this.folders;
+        }),
+      )
+      .subscribe(() => console.log('Success'))
   }
 
 
@@ -57,12 +58,17 @@ export class ListFoldersComponent implements OnInit {
 
   ngOnDestroy() {
     // this.fileService.default();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   openFile(file: IFolderStructureType) {
-    this.router.navigate([`/folders/details/${file.name}`], { queryParams: {
-      path: file.path
-    }});
+    this.router.navigate([`/folders/details/${file.name}`], {
+      queryParams: {
+        path: file.path
+      }
+    });
   }
 
 }

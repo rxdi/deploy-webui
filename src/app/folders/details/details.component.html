@@ -35,10 +35,13 @@
   {{ file }}
   <!-- {{ (rawFile | async)?.file }} -->
   <!-- <monaco-editor theme="vs-dark" [file]="fileMonaco" (fileChange)="onFileChange($event)"></monaco-editor> -->
-  <td-code-editor style="height: 500px" editorStyle="border:0;" flex theme="vs-dark" language="{{defaultFileType}}" automaticLayout
-    [editorOptions]="{readOnly: false, fontSize:14}" [(ngModel)]="model" (change)="onFileChange()"></td-code-editor>
+  <div *ngIf="isImage">
+    <img [src]="model | safeHtml">
+  </div>
+  <td-code-editor *ngIf="!isImage" style="height: 500px" editorStyle="border:0;" flex theme="vs-dark" language="{{defaultFileType}}"
+    automaticLayout [editorOptions]="{readOnly: false, fontSize:14}" [(ngModel)]="model" (change)="onFileChange()"></td-code-editor>
 
-  <div *ngIf="isJsOrTs()" style="font-size: 13px; margin-top: 30px; padding: 10px; overflow-x: hidden;height: 300px ;color: white;background-color: #1e1e1e">
+  <div *ngIf="!isImage && isJsOrTs()" style="font-size: 13px; margin-top: 30px; padding: 10px; overflow-x: hidden;height: 300px ;color: white;background-color: #1e1e1e">
     <p *ngFor="let m of stream | async">
       {{ m.message }}
     </p>

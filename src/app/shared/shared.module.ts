@@ -3,9 +3,11 @@ import { ListFoldersComponent } from "./components/list-folders/list-folders.com
 import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { CommonModule } from "@angular/common";
+import { SafeHtml } from "./pipes/safe-html.pipe";
 
 const COMPONENTS = [
-    ListFoldersComponent
+    ListFoldersComponent,
+    SafeHtml
 ];
 
 @NgModule({
@@ -15,7 +17,7 @@ const COMPONENTS = [
         MatListModule
     ],
     declarations: [
-        ...COMPONENTS
+        ...COMPONENTS,
     ],
     exports: [COMPONENTS]
 })
