@@ -9,7 +9,7 @@ import { MainViewComponent } from './main-view/main-view.component';
       { path: 'folders', loadChildren: './folders/folders.module#FoldersModule' },
       { path: 'builds', loadChildren: './builds/builds.module#BuildsModule' },
       { path: 'namespace', loadChildren: './namespace/namespace.module#NamespaceModule' },
-    ])
+    ], { useHash: true })
   ],
   exports: [
     RouterModule

@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Observable, of, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { FileService } from '../../../core/services/file/file.service';
 import { IFileType, IFolderStructureType } from '../../../core/api-introspection';
-import { switchMap, filter } from 'rxjs/operators/index';
+import { switchMap, filter, switchMapTo } from 'rxjs/operators/index';
 import { skip } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -15,26 +15,26 @@ export class ListFoldersComponent implements OnInit {
 
   private directory: string = '.';
   private subscription: Subscription;
+  private listSubscription: Subscription;
 
   constructor(
     private fileService: FileService,
     private router: Router
   ) { }
 
-  folders: Observable<IFileType>;
+  folders: BehaviorSubject<IFileType> = new BehaviorSubject(null);
 
   ngOnInit() {
-    this.folders = this.listFiles();
-    this.fileService.currentFolder
+    this.subscription = this.fileService.currentFolder
       .pipe(
-        filter(d => !!d),
-        switchMap(directory => {
-          this.directory = directory;
-          this.folders = this.listFiles();
-          return this.folders;
+        filter(d => {
+          this.directory = d;
+          return !!d;
         }),
       )
-      .subscribe(() => console.log('Success'))
+      .subscribe(() => {
+        this.listSubscription = this.listFiles().subscribe(files => this.folders.next(files))
+      })
   }
 
 
@@ -42,11 +42,11 @@ export class ListFoldersComponent implements OnInit {
     return this.fileService.listFiles(this.directory);
   }
 
-  isFileFromCurrentDirectory(file: IFolderStructureType) {
-    if (this.directory + '/' + file.name === file.path) {
-      return true;
-    }
-  }
+  // isFileFromCurrentDirectory(file: IFolderStructureType) {
+  //   if (this.directory + '/' + file.name === file.path) {
+  //     return true;
+  //   }
+  // }
 
   goToFileDetails(path: string) {
     this.fileService.changeFolder(path);
@@ -57,9 +57,11 @@ export class ListFoldersComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    // this.fileService.default();
     if (this.subscription) {
       this.subscription.unsubscribe();
+    }
+    if (this.listSubscription) {
+      this.listSubscription.unsubscribe();
     }
   }
 

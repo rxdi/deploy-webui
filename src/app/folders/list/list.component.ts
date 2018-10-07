@@ -23,7 +23,7 @@ export class ListComponent {
   }
 
   ngOnInit() {
-    this.subscription = this.fileService.currentFolder.subscribe(dir => this.folderForm.setValue({ path: dir }));
+    this.subscription = this.fileService.currentFolder.subscribe(dir => this.folderForm.setValue({ path: dir || '.' }));
   }
 
   openNewFolder() {
