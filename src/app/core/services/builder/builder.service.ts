@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { importQuery } from '../../api-introspection/graphql.helpers';
 import { IMutation, IBuildType, IQuery } from '../../api-introspection';
-import { map } from 'rxjs/operators/index';
+import { map } from 'rxjs/operators';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 

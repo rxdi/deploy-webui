@@ -1,9 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { FileService } from '../../../core/services/file/file.service';
 import { IFileType, IFolderStructureType } from '../../../core/api-introspection';
-import { switchMap, filter, switchMapTo } from 'rxjs/operators/index';
-import { skip } from 'rxjs/operators';
+import { switchMap, filter, switchMapTo ,  skip } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,9 +10,9 @@ import { Router } from '@angular/router';
   templateUrl: './list-folders.component.html',
   styleUrls: ['./list-folders.component.css']
 })
-export class ListFoldersComponent implements OnInit {
+export class ListFoldersComponent implements OnInit, OnDestroy {
 
-  private directory: string = '.';
+  private directory = '.';
   private subscription: Subscription;
   private listSubscription: Subscription;
 
@@ -33,8 +32,8 @@ export class ListFoldersComponent implements OnInit {
         }),
       )
       .subscribe(() => {
-        this.listSubscription = this.listFiles().subscribe(files => this.folders.next(files))
-      })
+        this.listSubscription = this.listFiles().subscribe(files => this.folders.next(files));
+      });
   }
 
 

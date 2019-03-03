@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { importQuery } from '../../api-introspection/graphql.helpers';
-import { map } from 'rxjs/operators/index';
+import { map } from 'rxjs/operators';
 import { IQuery } from '../../api-introspection';
 import { BehaviorSubject } from 'rxjs';
 

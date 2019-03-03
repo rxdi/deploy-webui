@@ -7,7 +7,7 @@ import { FileService } from '../../core/services/file/file.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'subscriptions-transport-ws';
 import { IFileRawType, IMutation } from '../../core/api-introspection';
-import { skip, tap, map } from 'rxjs/operators/index';
+import { skip, tap, map } from 'rxjs/operators';
 import { MonacoFile } from 'ngx-monaco';
 import { LoggerService } from '../../core/services/logger/logger.service';
 import { Apollo } from 'apollo-angular';

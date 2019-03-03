@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { map } from 'rxjs/operators/index';
+import { map } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import gql from 'graphql-tag';
 
