@@ -17,7 +17,7 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this.builds = this.buildService.getBuildHistory();
-    for (let index: number = 1; index <= 1500; index++) {
+    for (let index = 1; index <= 1500; index++) {
       this.data.push({index: index, name: 'element-' + index});
     }
   }

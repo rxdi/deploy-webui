@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import{  MatListModule } from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
 import { BuildsRoutingModule } from './builds-routing.module';
 import { ListComponent } from './list/list.component';
 import { DetailsComponent } from './details/details.component';

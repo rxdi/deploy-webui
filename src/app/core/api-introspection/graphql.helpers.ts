@@ -13,5 +13,5 @@ export function importQuery(search: DocumentTypes) {
       throw new Error(`Missing query: ${search}`);
     }
     return result;
-};
+}
 

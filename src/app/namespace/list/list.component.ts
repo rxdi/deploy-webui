@@ -12,7 +12,7 @@ import { BackService } from '../../core/services/back.service';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
-  namespaces: Observable<INamespaceListType>
+  namespaces: Observable<INamespaceListType>;
   constructor(
     private namespaceService: NamespaceService,
     private router: Router,

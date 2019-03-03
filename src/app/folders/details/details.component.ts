@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Subscription, Subject } from 'rxjs';
@@ -18,7 +18,7 @@ import gql from 'graphql-tag';
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   file: string;
   path: string;
   subscription: Subscription;
@@ -26,16 +26,16 @@ export class DetailsComponent implements OnInit {
     namespace: ['', Validators.required],
     commit: ['', Validators.required]
   });
-  defaultFileType: string = 'typescript';
+  defaultFileType = 'typescript';
   rawFile: Observable<IFileRawType>;
   fileMonaco: MonacoFile = {
     uri: 'index.js',
     language: this.defaultFileType,
     content: `console.log('hello world');`
   };
-  loading: boolean = true;
+  loading = true;
   isImage: boolean;
-  disabled: boolean = false;
+  disabled = false;
   newFile: string;
   ipfsLink: string;
   extension: string;
@@ -155,7 +155,6 @@ export class DetailsComponent implements OnInit {
     )
     .subscribe(
       (res) => {
-        debugger
         this.ipfsLink = res;
         this.disabled = false;
       },

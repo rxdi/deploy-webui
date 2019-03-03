@@ -14,14 +14,13 @@ export class ListFoldersComponent implements OnInit, OnDestroy {
 
   private directory = '.';
   private subscription: Subscription;
-  private listSubscription: Subscription;
+  folders: Observable<IFileType>;
 
   constructor(
     private fileService: FileService,
     private router: Router
   ) { }
 
-  folders: BehaviorSubject<IFileType> = new BehaviorSubject(null);
 
   ngOnInit() {
     this.subscription = this.fileService.currentFolder
@@ -32,14 +31,10 @@ export class ListFoldersComponent implements OnInit, OnDestroy {
         }),
       )
       .subscribe(() => {
-        this.listSubscription = this.listFiles().subscribe(files => this.folders.next(files));
+        this.folders = this.fileService.listFiles(this.directory);
       });
   }
 
-
-  listFiles() {
-    return this.fileService.listFiles(this.directory);
-  }
 
   // isFileFromCurrentDirectory(file: IFolderStructureType) {
   //   if (this.directory + '/' + file.name === file.path) {
@@ -58,9 +53,6 @@ export class ListFoldersComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
-    }
-    if (this.listSubscription) {
-      this.listSubscription.unsubscribe();
     }
   }
 
