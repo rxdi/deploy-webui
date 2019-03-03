@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { Apollo } from "apollo-angular";
-import { map } from "rxjs/operators/index";
-import { BehaviorSubject } from "rxjs";
-import gql from "graphql-tag";
+import { Injectable } from '@angular/core';
+import { Apollo } from 'apollo-angular';
+import { map } from 'rxjs/operators/index';
+import { BehaviorSubject } from 'rxjs';
+import gql from 'graphql-tag';
 
 @Injectable()
 export class LoggerService {

@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { Apollo } from "apollo-angular";
-import { importQuery } from "../../api-introspection/graphql.helpers";
-import { map } from "rxjs/operators/index";
-import { IQuery } from "../../api-introspection";
-import { BehaviorSubject } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Apollo } from 'apollo-angular';
+import { importQuery } from '../../api-introspection/graphql.helpers';
+import { map } from 'rxjs/operators/index';
+import { IQuery } from '../../api-introspection';
+import { BehaviorSubject } from 'rxjs';
 
 export const LIST_FILES_QUERY = importQuery('list-files.query.graphql');
 export const READ_FILE_QUERY = importQuery('read-file.query.graphql');
@@ -25,7 +25,7 @@ export class FileService {
             variables: { folder }
         }).pipe(
             map(res => res.data.listFiles)
-        )
+        );
     }
 
     readFile(folder: string) {
@@ -34,7 +34,7 @@ export class FileService {
             variables: { folder }
         }).pipe(
             map(res => res.data.readFile)
-        )
+        );
     }
 
     saveFile(folder: string, content: string) {
@@ -43,7 +43,7 @@ export class FileService {
             variables: { folder, content }
         }).pipe(
             map(res => res.data.saveFile)
-        )
+        );
     }
 
     changeFolder(folder: string) {

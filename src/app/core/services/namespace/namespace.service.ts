@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { Apollo } from "apollo-angular";
-import { importQuery } from "../../api-introspection/graphql.helpers";
-import { map } from "rxjs/operators/index";
-import { IQuery } from "../../api-introspection";
+import { Injectable } from '@angular/core';
+import { Apollo } from 'apollo-angular';
+import { importQuery } from '../../api-introspection/graphql.helpers';
+import { map } from 'rxjs/operators/index';
+import { IQuery } from '../../api-introspection';
 export const LIST_NAMESPACES_QUERY = importQuery('list-namespace.query.graphql');
 export const GET_NAMESPACE_BY_ID = importQuery('get-namespace-by-id.query.graphql');
 
@@ -21,7 +21,7 @@ export class NamespaceService {
             }
         }).pipe(
             map((res) => res.data.listNamespaces)
-        )
+        );
     }
 
     getNamespaceById(id: string) {
@@ -32,6 +32,6 @@ export class NamespaceService {
             }
         }).pipe(
             map((res) => res.data.getNamespace)
-        )
+        );
     }
 }

@@ -6,10 +6,12 @@ import { BuilderService } from '../../core/services/builder/builder.service';
 import { FileService } from '../../core/services/file/file.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'subscriptions-transport-ws';
-import { IFileRawType } from '../../core/api-introspection';
-import { skip, tap } from 'rxjs/operators/index';
+import { IFileRawType, IMutation } from '../../core/api-introspection';
+import { skip, tap, map } from 'rxjs/operators/index';
 import { MonacoFile } from 'ngx-monaco';
 import { LoggerService } from '../../core/services/logger/logger.service';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 
 @Component({
   selector: 'app-details',
@@ -35,6 +37,7 @@ export class DetailsComponent implements OnInit {
   isImage: boolean;
   disabled: boolean = false;
   newFile: string;
+  ipfsLink: string;
   extension: string;
   fileChange = new Subject<MonacoFile>();
   stream: Observable<any>;
@@ -46,11 +49,12 @@ export class DetailsComponent implements OnInit {
     private buildService: BuilderService,
     private formBuilder: FormBuilder,
     private fileService: FileService,
-    public serverLogger: LoggerService
+    public serverLogger: LoggerService,
+    private apollo: Apollo
   ) { }
 
   ngOnInit() {
-   
+
     this.file = this.route.snapshot.paramMap.get('file');
     this.extension = this.file.split('.').pop();
     this.isImage = this.extension === 'jpg' || this.extension === 'jpeg' || this.extension === 'png';
@@ -63,19 +67,19 @@ export class DetailsComponent implements OnInit {
     this.subscription = this.route.queryParams
       .subscribe(params => {
         this.path = params['path'];
-        if(this.path) {
+        if (this.path) {
           this.fileService.readFile(this.path)
-          .subscribe(stream => {
-            if (stream.package) {
-              stream.package = JSON.parse(stream.package);
-              this.form.patchValue({
-                namespace: stream.package['name']
-              });
-            }
-            this.model = stream.file;
-            this.fileMonaco.content = stream.file;
-            this.loading = false;
-          });
+            .subscribe(stream => {
+              if (stream.package) {
+                stream.package = JSON.parse(stream.package);
+                this.form.patchValue({
+                  namespace: stream.package['name']
+                });
+              }
+              this.model = stream.file;
+              this.fileMonaco.content = stream.file;
+              this.loading = false;
+            });
         } else {
           this.loading = false;
         }
@@ -128,6 +132,35 @@ export class DetailsComponent implements OnInit {
 
   build() {
 
+  }
+
+  uploadFile() {
+    this.disabled = true;
+    const folder = this.path.replace(this.file, '');
+    return this.apollo.mutate<IMutation>({
+      mutation: gql`
+        mutation uploadImage($folder:String!, $file:String!) {
+          uploadImage(folder:$folder, file:$file) {
+            link
+          }
+        }
+      `,
+      variables: {
+        folder,
+        file: this.file
+      }
+    })
+    .pipe(
+      map(res => res.data.uploadImage.link)
+    )
+    .subscribe(
+      (res) => {
+        debugger
+        this.ipfsLink = res;
+        this.disabled = false;
+      },
+      () => this.disabled = false
+    );
   }
 
 }

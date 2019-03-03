@@ -91,8 +91,8 @@ export interface getBuildHistoryVariables {
 
 export interface listFiles_listFiles_paths {
   path: string | null;
-  directory: string | null;
-  file: string | null;
+  directory: boolean | null;
+  file: boolean | null;
   name: string | null;
 }
 

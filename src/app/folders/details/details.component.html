@@ -1,9 +1,15 @@
 <div style="margin-bottom:80px;" *ngIf="!loading">
   <div style="display: flex">
     <div>
-      <button mat-raised-button color="primary" (click)="back()">
-        Back
-      </button>
+        <button mat-raised-button color="primary" (click)="back()">
+            Back
+          </button>
+          
+          <button [disabled]="disabled" style="margin-left: 10px" mat-raised-button color="accent" (click)="uploadFile()">
+              Upload
+            </button>
+            <a *ngIf="ipfsLink" href="{{ ipfsLink }}" target="_blank">IPFS Link</a>
+
     </div>
 
     <span class="spacer"></span>
@@ -23,7 +29,9 @@
       </mat-error> -->
     </form>
     <span class="spacer"></span>
+
     <div>
+
       <button style="margin-right: 15px;" *ngIf="isJsOrTs()" mat-raised-button (click)="build()" color="primary">
         Build
       </button>
@@ -31,13 +39,16 @@
         Deploy
       </button>
     </div>
+
   </div>
   {{ file }}
+
   <!-- {{ (rawFile | async)?.file }} -->
   <!-- <monaco-editor theme="vs-dark" [file]="fileMonaco" (fileChange)="onFileChange($event)"></monaco-editor> -->
   <div *ngIf="isImage">
     <img [src]="model | safeHtml">
   </div>
+
   <td-code-editor *ngIf="!isImage" style="height: 500px" editorStyle="border:0;" flex theme="vs-dark" language="{{defaultFileType}}"
     automaticLayout [editorOptions]="{readOnly: false, fontSize:14}" [(ngModel)]="model" (change)="onFileChange()"></td-code-editor>
 
@@ -50,3 +61,4 @@
   </div>
 
 </div>
+

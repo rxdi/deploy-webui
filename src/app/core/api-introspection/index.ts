@@ -101,8 +101,8 @@
   export interface IFolderStructureType {
     __typename?: "FolderStructureType";
     path: string | null;
-    directory: string | null;
-    file: string | null;
+    directory: boolean | null;
+    file: boolean | null;
     name: string | null;
     status: IFileStatusType | null;
 }
@@ -150,12 +150,19 @@
     __typename?: "Mutation";
     insertNamespace: INamespacetype | null;
     triggerBuild: IBuildType | null;
+    uploadImage: IUploadImageType | null;
 }
 
   
   export interface IBuildType {
     __typename?: "BuildType";
     status: string | null;
+}
+
+  
+  export interface IUploadImageType {
+    __typename?: "UploadImageType";
+    link: string | null;
 }
 
   /**

@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { importQuery } from "../../api-introspection/graphql.helpers";
-import { IMutation, IBuildType, IQuery } from "../../api-introspection";
-import { map } from "rxjs/operators/index";
-import { Apollo } from "apollo-angular";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { importQuery } from '../../api-introspection/graphql.helpers';
+import { IMutation, IBuildType, IQuery } from '../../api-introspection';
+import { map } from 'rxjs/operators/index';
+import { Apollo } from 'apollo-angular';
+import { Observable } from 'rxjs';
 
 export const BUILD_MUTATION = importQuery('build.mutation.graphql');
 export const GET_BUILD_HISTORY_QUERY = importQuery('build-list.query.graphql');
@@ -23,7 +23,7 @@ export class BuilderService {
             variables: {
                 folder, file, message, namespace, buildFolder
             }
-        })
+        });
     }
 
     getBuildHistory(skip?: number, limit?: number, where?) {
@@ -32,7 +32,7 @@ export class BuilderService {
             variables: { skip, limit, where }
         }).pipe(
             map(res => res.data.getBuildHistory)
-        )
+        );
     }
 
 }

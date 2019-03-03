@@ -46,7 +46,8 @@ export const COVALENT = [
   CovalentHighlightModule,
   CovalentMarkdownModule,
   CovalentDynamicFormsModule,
-]
+];
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,7 +77,7 @@ export const COVALENT = [
       useFactory: () => {
         let config;
         try {
-          config = JSON.parse(localStorage.getItem('config'))
+          config = JSON.parse(localStorage.getItem('config'));
         } catch (e) {
           localStorage.clear();
           window.location.reload();
