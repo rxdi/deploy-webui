@@ -1,5 +1,5 @@
 {
-  "name": "deploy-webui",
+  "name": "@rxdi/deploy-webui",
   "version": "0.0.409",
   "scripts": {
     "ng": "ng",
@@ -10,6 +10,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rxdi/deploy-webui"
   },
   "private": true,
   "dependencies": {
