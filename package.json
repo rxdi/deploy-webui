@@ -1,6 +1,6 @@
 {
   "name": "@rxdi/deploy-webui",
-  "version": "0.4.27",
+  "version": "0.4.28",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
